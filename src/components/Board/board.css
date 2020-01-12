@@ -1,0 +1,12 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(15, 50px);
+  grid-template-rows: repeat(15, 50px);
+  grid-gap: 3px;
+  background-color: #fff;
+  border-top: 5px solid #aaa;
+  border-right: 5px solid #555;
+  border-bottom: 5px solid #555;
+  border-left: 5px solid #aaa;
+  border-radius: 5px;
+}
