@@ -1,0 +1,6 @@
+.rack {
+  display: grid;
+  grid-template-columns: repeat(7, 30px);
+  grid-template-rows: 30px;
+  grid-gap: 3px;
+}

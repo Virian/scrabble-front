@@ -1,0 +1,9 @@
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score__player-name {
+  font-weight: 600;
+}

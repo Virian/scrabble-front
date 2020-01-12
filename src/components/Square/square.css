@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #0b9e3a;
+  background-color: #efece1;
   box-shadow: inset 0 1px 5px -2px rgba(0, 0, 0, 0.2),
     inset 1px -2px 4px -1px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -10,7 +10,7 @@
 }
 
 .square--red {
-  background-color: #eb4034;
+  background-color: #fe704d;
 }
 
 .square__bonus-text {
