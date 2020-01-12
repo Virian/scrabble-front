@@ -2,7 +2,14 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #f5c133;
+  box-sizing: border-box;
+  border-top: 1.5px solid rgba(255, 255, 255, .45);
+  border-right: 1px solid rgba(0, 0, 0, .15);
+  border-bottom: 2px solid rgba(0, 0, 0, .30);
+  border-left: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 1px;
+  background-color: #f5cf90;
+  background-image: url('../../assets/img/tile-texture.png');
 }
 
 .tile--movable {
@@ -16,11 +23,15 @@
   transform: translate(-50%, -50%);
   font-size: 18px;
   text-transform: uppercase;
+  text-shadow:
+    4px 4px 6px #f5cf90,
+    1px 2px 1px rgba(255, 255, 255, .5);
 }
 
 .tile__score {
   position: absolute;
   right: 12.5%;
-  bottom: 12.5%;
+  bottom: 15%;
   font-size: 9px;
+  transform: translate(50%, 50%);
 }
