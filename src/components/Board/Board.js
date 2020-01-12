@@ -14,7 +14,7 @@ export default function Board() {
     }
   }
   board[2][4].tile = { letter: 'a', score: '1' };
-  board[0][0].bonus = { color: 'red', text: 'Potrójna premia słowna' };
+  board[0][0].bonus = { color: 'red', text: 'S3' };
   console.log(board);
 
   return (

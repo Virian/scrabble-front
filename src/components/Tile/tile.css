@@ -10,7 +10,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 30px;
+  font-size: 18px;
   text-transform: uppercase;
 }
 
@@ -18,5 +18,5 @@
   position: absolute;
   right: 12.5%;
   bottom: 12.5%;
-  font-size: 12px;
+  font-size: 9px;
 }

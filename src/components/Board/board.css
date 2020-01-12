@@ -1,7 +1,7 @@
 .board {
   display: grid;
-  grid-template-columns: repeat(15, 50px);
-  grid-template-rows: repeat(15, 50px);
+  grid-template-columns: repeat(15, 30px);
+  grid-template-rows: repeat(15, 30px);
   grid-gap: 3px;
   background-color: #fff;
   border-top: 5px solid #aaa;

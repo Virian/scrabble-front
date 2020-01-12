@@ -12,3 +12,7 @@
 .square--red {
   background-color: #eb4034;
 }
+
+.square__bonus-text {
+  font-weight: 500;
+}
