@@ -1,24 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Board from '../Board';
 import Side from '../Side';
+import Message from '../../models/Message';
+import messageTypes from '../../enum/messageTypes';
 
 export default function Game() {
+  const [ws] = useState(new WebSocket('ws://localhost:3001'));
+  const [board, setBoard] = useState([]);
+  const [bonuses, setBonuses] = useState([]);
+
   useEffect(() => {
     ws.onopen = () => {
       console.log('connected');
-      ws.send('something');
     }
 
     ws.onmessage = ({ data }) => {
-      console.log('message', data);
+      handleMessage(data);
     }
 
     ws.onclose = () => {
       console.log('disconnected');
     }
-  });
+  }, [ws]);
 
-  const ws = new WebSocket('ws://localhost:3001');
+  const handleMessage = (message) => {
+    const messageObj = new Message(JSON.parse(message));
+    console.log(messageObj);
+    switch (messageObj.type) {
+      case messageTypes.SEND_BOARD:
+        setBoard(messageObj.data.board);
+        setBonuses(messageObj.data.bonuses);
+        break;
+      default:
+        break;
+    }
+  }
+
   const rackTiles = [{
     letter: 'a',
     score: '1',
@@ -44,7 +61,10 @@ export default function Game() {
 
   return (
     <div className="game">
-      <Board />
+      <Board
+        board={board}
+        bonuses={bonuses}
+      />
       <Side rackTiles={rackTiles} />
     </div>
   )
