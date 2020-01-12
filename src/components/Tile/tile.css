@@ -5,6 +5,10 @@
   background-color: #f5c133;
 }
 
+.tile--movable {
+  cursor: grab;
+}
+
 .tile__letter {
   position: absolute;
   top: 50%;

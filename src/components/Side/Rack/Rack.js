@@ -9,6 +9,7 @@ export default function Rack(props) {
           key={`rack-tile-${index}`}
           letter={tile.letter}
           score={tile.score}
+          movable
         />
       ))}
     </div>
