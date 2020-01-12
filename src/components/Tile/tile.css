@@ -13,7 +13,7 @@
 }
 
 .tile--movable {
-  cursor: grab;
+  cursor: pointer;
 }
 
 .tile__letter {
