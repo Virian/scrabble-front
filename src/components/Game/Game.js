@@ -5,21 +5,25 @@ import Message from '../../models/Message';
 import MessageTypes from '../../enum/MessageTypes';
 
 export default function Game() {
-  const [ws] = useState(new WebSocket('ws://localhost:3001'));
+  const [ws, setWs] = useState(null);
   const [board, setBoard] = useState([]);
   const [bonuses, setBonuses] = useState([]);
 
   useEffect(() => {
-    ws.onopen = () => {
-      console.log('connected');
-    }
+    setWs(new WebSocket('ws://localhost:3001'))
+  }, [])
 
-    ws.onmessage = ({ data }) => {
-      handleMessage(data);
-    }
-
-    ws.onclose = () => {
-      console.log('disconnected');
+  useEffect(() => {
+    if (ws) {
+      ws.onopen = () => {
+        console.log('connected');
+      }
+      ws.onmessage = ({ data }) => {
+        handleMessage(data);
+      }
+      ws.onclose = () => {
+        console.log('disconnected');
+      }
     }
   }, [ws]);
 
