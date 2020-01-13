@@ -1,23 +1,23 @@
-import bonusTypes from '../enum/bonusTypes';
+import BonusTypes from '../enum/BonusTypes';
 
 const bonuses = [
   {
-    type: bonusTypes.WORD,
+    type: BonusTypes.WORD,
     multiplier: 2,
     text: 'S2',
     color: 'pink',
   }, {
-    type: bonusTypes.WORD,
+    type: BonusTypes.WORD,
     multiplier: 3,
     text: 'S3',
     color: 'red',
   }, {
-    type: bonusTypes.LETTER,
+    type: BonusTypes.LETTER,
     multiplier: 2,
     text: 'L2',
     color: 'paleblue',
   }, {
-    type: bonusTypes.LETTER,
+    type: BonusTypes.LETTER,
     multiplier: 3,
     text: 'L3',
     color: 'blue',

@@ -3,22 +3,20 @@ import Square from '../Square';
 import Tile from '../Tile';
 import { getBonusTextAndColor } from '../../utils/bonus.utils'
 
-export default function Board(props) {
+export default function Board({ boardTiles, bonuses }) {
   const [board, setBoard] = useState([]);
   useEffect(() => {
-    let tempBoard = props.board.map(row => {
+    let tempBoard = boardTiles.map(row => {
       return row.map(square => ({ square, bonus: null }));
     });
-    props.bonuses.forEach(bonus => {
+    bonuses.forEach(bonus => {
       tempBoard[bonus.y][bonus.x].bonus = {
         ...bonus,
         ...getBonusTextAndColor(bonus),
       }
     })
     setBoard(tempBoard)
-  }, [props.board, props.bonuses]);
-
-
+  }, [boardTiles, bonuses]);
 
   return (
     <div className="board">

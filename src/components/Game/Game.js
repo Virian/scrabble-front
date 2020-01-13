@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Board from '../Board';
 import Side from '../Side';
 import Message from '../../models/Message';
-import messageTypes from '../../enum/messageTypes';
+import MessageTypes from '../../enum/MessageTypes';
 
 export default function Game() {
   const [ws] = useState(new WebSocket('ws://localhost:3001'));
@@ -27,7 +27,7 @@ export default function Game() {
     const messageObj = new Message(JSON.parse(message));
     console.log(messageObj);
     switch (messageObj.type) {
-      case messageTypes.SEND_BOARD:
+      case MessageTypes.SEND_BOARD:
         setBoard(messageObj.data.board);
         setBonuses(messageObj.data.bonuses);
         break;
@@ -62,7 +62,7 @@ export default function Game() {
   return (
     <div className="game">
       <Board
-        board={board}
+        boardTiles={board}
         bonuses={bonuses}
       />
       <Side rackTiles={rackTiles} />

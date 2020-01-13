@@ -1,7 +1,7 @@
 import React from 'react';
 import PlayerScore from './PlayerScore';
 
-export default function Scores(props) {
+export default function Scores() {
   return (
     <div className="scores">
       <PlayerScore
