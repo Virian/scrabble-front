@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { sortBy } from 'lodash-es'
 import Board from '../Board';
 import Side from '../Side';
 import Message from '../../models/Message';
@@ -41,21 +42,30 @@ export default function Game() {
         setBoard(messageObj.data.board);
         setBonuses(messageObj.data.bonuses);
         break;
-      case MessageTypes.SEND_PLAYERS:
-        const newPlayers = messageObj.data.map((player) => new Player({
-          ...player,
-          score: 0,
-        }));
+      case MessageTypes.SEND_PLAYERS: {
+        const newPlayers = messageObj.data.map((player) => new Player(player));
         setPlayers(newPlayers);
         break;
-      case MessageTypes.PLAYER_CONNECTED:
+      }
+      case MessageTypes.PLAYER_CONNECTED: {
         const newPlayer = new Player({
           id: messageObj.data,
-          score: 0,
           isYou: false,
         });
         setPlayers((currentPlayers) => [...currentPlayers, newPlayer]);
         break;
+      }
+      case MessageTypes.PLAYER_ORDER: {
+        setPlayers((currentPlayers) => {
+          let newPlayers = currentPlayers.slice(0);
+          newPlayers.forEach((player, index) => {
+            const matchingPlayerData = messageObj.data.find(data => data.id === player.id);
+            newPlayers[index].order = matchingPlayerData.order;
+          });
+          return sortBy(newPlayers, 'order');
+        });
+        break;
+      }
       case MessageTypes.ADD_TILES:
         setRackTiles(messageObj.data);
         break;
