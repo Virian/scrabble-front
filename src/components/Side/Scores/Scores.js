@@ -1,17 +1,16 @@
 import React from 'react';
 import PlayerScore from './PlayerScore';
 
-export default function Scores() {
+export default function Scores({ players }) {
   return (
     <div className="scores">
-      <PlayerScore
-        name="Player 123"
-        score="109"
-      />
-      <PlayerScore
-        name="opponent1"
-        score="78"
-      />
+      {players.map(player => (
+        <PlayerScore
+          key={player.id}
+          name={player.isYou ? 'Ty' : 'Przeciwnik'}
+          score={player.score}
+        />
+      ))}
     </div>
   )
 };

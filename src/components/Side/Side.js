@@ -3,10 +3,10 @@ import Rack from './Rack';
 import Scores from './Scores';
 import Actions from './Actions';
 
-export default function Side({ rackTiles }) {
+export default function Side({ rackTiles, players }) {
   return (
     <div className="side">
-      <Scores />
+      <Scores players={players} />
       <Rack tiles={rackTiles} />
       <Actions />
     </div>

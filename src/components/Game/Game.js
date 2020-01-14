@@ -12,6 +12,7 @@ export default function Game() {
   const [board, setBoard] = useState([]);
   const [bonuses, setBonuses] = useState([]);
   const [rackTiles, setRackTiles] = useState([]);
+  const [players, setPlayers] = useState([]);
 
   useEffect(() => {
     setWs(new WebSocket('ws://localhost:3001'))
@@ -39,6 +40,21 @@ export default function Game() {
         setBoard(messageObj.data.board);
         setBonuses(messageObj.data.bonuses);
         break;
+      case MessageTypes.SEND_PLAYERS:
+        const newPlayers = messageObj.data.map((player) => ({
+          ...player,
+          score: 0,
+        }));
+        setPlayers(newPlayers);
+        break;
+      case MessageTypes.PLAYER_CONNECTED:
+        const newPlayer = {
+          id: messageObj.data,
+          score: 0,
+          isYou: false,
+        };
+        setPlayers((currentPlayers) => [...currentPlayers, newPlayer]);
+        break;
       case MessageTypes.ADD_TILES:
         setRackTiles(messageObj.data);
         break;
@@ -53,7 +69,10 @@ export default function Game() {
         boardTiles={board}
         bonuses={bonuses}
       />
-      <Side rackTiles={rackTiles} />
+      <Side
+        rackTiles={rackTiles}
+        players={players}
+      />
     </div>
   )
 };

@@ -7,3 +7,10 @@
 .score__player-name {
   font-weight: 600;
 }
+
+.score__player-score {
+  margin-top: 5px;
+  padding: 5px 20px;
+  border: 1px solid #333;
+  border-radius: 10px;
+}
