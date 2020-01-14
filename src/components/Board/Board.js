@@ -22,12 +22,12 @@ export default function Board({ boardTiles, bonuses }) {
     <div className="board">
       {
         board.map((row, rowIndex) =>
-          row.map((square, columnIndex) => (
+          row.map(({ bonus, tile }, columnIndex) => (
             <Square 
               key={`square-${rowIndex}-${columnIndex}`}
-              bonus={square.bonus}
+              bonus={bonus}
             >
-              {square.tile && <Tile letter={square.tile.letter} score={square.tile.score} />}
+              {tile && <Tile letter={tile.letter} score={tile.score} />}
             </Square>
           ))
         )

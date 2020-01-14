@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Board from '../Board';
 import Side from '../Side';
 import Message from '../../models/Message';
 import MessageTypes from '../../enum/MessageTypes';
+import GameContext from '../../context/GameContext';
 
 export default function Game() {
+  const { gameState } = useContext(GameContext);
+
   const [ws, setWs] = useState(null);
   const [board, setBoard] = useState([]);
   const [bonuses, setBonuses] = useState([]);
+  const [rackTiles, setRackTiles] = useState([]);
 
   useEffect(() => {
     setWs(new WebSocket('ws://localhost:3001'))
@@ -35,33 +39,13 @@ export default function Game() {
         setBoard(messageObj.data.board);
         setBonuses(messageObj.data.bonuses);
         break;
+      case MessageTypes.ADD_TILES:
+        setRackTiles(messageObj.data);
+        break;
       default:
         break;
     }
   }
-
-  const rackTiles = [{
-    letter: 'a',
-    score: '1',
-  }, {
-    letter: 't',
-    score: '2',
-  }, {
-    letter: 'ź',
-    score: '9',
-  }, {
-    letter: 'o',
-    score: '1',
-  }, {
-    letter: 'h',
-    score: '3',
-  }, {
-    letter: 'c',
-    score: '2',
-  }, {
-    letter: 's',
-    score: '1',
-  }]
 
   return (
     <div className="game">
