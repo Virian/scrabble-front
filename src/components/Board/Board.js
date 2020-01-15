@@ -5,6 +5,7 @@ import { getBonusTextAndColor } from '../../utils/bonus.utils'
 
 export default function Board({ boardTiles, bonuses }) {
   const [board, setBoard] = useState([]);
+  
   useEffect(() => {
     let tempBoard = boardTiles.map(row => {
       return row.map(square => ({ square, bonus: null }));

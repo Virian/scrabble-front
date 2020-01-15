@@ -1,10 +1,13 @@
 import React from 'react';
 import Game from './components/Game';
+import { GameContextProvider } from './context/GameContext';
 
 function App() {
   return (
     <div className="App">
-      <Game />
+      <GameContextProvider>
+        <Game />
+      </GameContextProvider>
     </div>
   );
 }
