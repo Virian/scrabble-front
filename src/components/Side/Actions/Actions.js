@@ -3,7 +3,7 @@ import { ButtonGroup, Button } from '@material-ui/core'
 import { GameContext } from '../../../context/GameContext';
 import GameState from '../../../enum/GameState';
 
-export default function Actions({ onHold }) {
+export default function Actions({ canSwap, onHold, onSwap }) {
   const { gameState } = useContext(GameContext);
   const [isYourTurn, setIsYourTurn] = useState(false);
 
@@ -15,7 +15,10 @@ export default function Actions({ onHold }) {
     <div className="actions">
       <ButtonGroup disabled={!isYourTurn}>
         <Button>ułóż</Button>
-        <Button>wymień</Button>
+        <Button
+          disabled={!canSwap}
+          onClick={onSwap}
+        >wymień</Button>
         <Button onClick={onHold}>pas</Button>
       </ButtonGroup>
       <ButtonGroup>

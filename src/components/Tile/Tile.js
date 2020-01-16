@@ -8,7 +8,10 @@ export default function Tile({
   score,
   movable,
   index,
-  moveRackTiles
+  moveRackTiles,
+  isRackTile,
+  isHighlighted,
+  toggleTileHighlight,
 }) {
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -17,11 +20,9 @@ export default function Tile({
       if (!ref.current) return;
       const dragIndex = item.index;
       const hoverIndex = index;
-      // Don't replace items with themselves
       if (dragIndex === hoverIndex) return;
       // Determine rectangle on screen
       const hoverBoundingRect = ref.current.getBoundingClientRect();
-      // Get horizontal breakpoints
       const horizontalLeftBreakpoint = (hoverBoundingRect.right - hoverBoundingRect.left) / 3;
       const horizontalRightBreakpoint = (hoverBoundingRect.right - hoverBoundingRect.left) * 2 / 3;
       // Determine mouse position
@@ -35,7 +36,6 @@ export default function Tile({
       if (dragIndex < hoverIndex && hoverClientX < horizontalLeftBreakpoint) return;
       // Dragging left
       if (dragIndex > hoverIndex && hoverClientX > horizontalRightBreakpoint) return;
-      // Time to actually perform the action
       moveRackTiles(dragIndex, hoverIndex);
       // Note: we're mutating the monitor item here! Generally it's better to avoid mutations,
       // but it's good here for the sake of performance to avoid expensive index searches.
@@ -47,11 +47,19 @@ export default function Tile({
     canDrag: () => movable,
   });
   drag(drop(ref));
+
+  const highlightTile = () => {
+    if (!isRackTile) return;
+    toggleTileHighlight();
+  }
+
   return (
     <div
       ref={ref}
       className={classNames('tile', { 'tile--movable': movable })}
+      onClick={highlightTile}
     >
+      {isHighlighted ? <div className="tile__overlay" /> : null}
       <span className="tile__letter">{letter}</span>
       {score ? <span className="tile__score">{score}</span> : null}
     </div>

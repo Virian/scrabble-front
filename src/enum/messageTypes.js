@@ -8,5 +8,7 @@ export default {
   NEXT_PLAYER: 'nextPlayer',
   PLACE: 'place',
   SWAP: 'swap',
+  SWAP_CANCELLED: 'swapCancelled',
+  SWAP_ACCEPTED: 'swapAccepted',
   HOLD: 'hold',
 };

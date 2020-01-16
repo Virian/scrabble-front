@@ -45,7 +45,13 @@ export default function Game() {
         break;
       }
       case MessageTypes.ADD_TILES:
-        setRackTiles(currentRack => [...currentRack, ...messageObj.data]);
+        setRackTiles(currentRack => {
+          const newTiles = messageObj.data.map((tile) => ({
+            ...tile,
+            isHighlighted: false,
+          }));
+          return [...currentRack, ...newTiles]
+        });
         break;
       case MessageTypes.NOTIFY_START:
         setActivePlayerIndex(0);
@@ -59,6 +65,22 @@ export default function Game() {
           setGameState(newPlayers[0].isYou ? GameState.PLAYING_FIRST_TURN : GameState.WAITING_OPPONENT);
           return newPlayers
         });
+        break;
+      case MessageTypes.SWAP_ACCEPTED:
+        setRackTiles(currentRack => {
+          const newTiles = messageObj.data.map((tile) => ({
+            ...tile,
+            isHighlighted: false,
+          }));
+          return [...currentRack, ...newTiles]
+        });
+        setActivePlayerIndex((currentIndex) => {
+          return (currentIndex + 1) % players.length;
+        });
+        setGameState(GameState.WAITING_OPPONENT);
+        break;
+      case MessageTypes.SWAP_CANCELLED:
+        // TODO: display information about unsuccessful swap
         break;
       case MessageTypes.NEXT_PLAYER:
         setActivePlayerIndex((currentIndex) => {
@@ -87,6 +109,17 @@ export default function Game() {
     });
   };
 
+  const onSwap = () => {
+    setRackTiles((currentRack) => {
+      const lettersToSwap = currentRack
+        .filter((tile) => tile.isHighlighted)
+        .map((tile) => tile.letter);
+      const newRack = currentRack.filter((tile) => !tile.isHighlighted);
+      ws.send(JSON.stringify(new Message({ type: MessageTypes.SWAP, data: lettersToSwap })));
+      return newRack;
+    });
+  };
+
   const onHold = () => {
     ws.send(JSON.stringify(new Message({ type: MessageTypes.HOLD })));
     setActivePlayerIndex((currentIndex) => {
@@ -94,6 +127,14 @@ export default function Game() {
     });
     setGameState(GameState.WAITING_OPPONENT);
   };
+
+  const toggleTileHighlight = (index) => {
+    setRackTiles((currentRack) => {
+      let rackCopy = currentRack.slice(0);
+      rackCopy[index].isHighlighted = !rackCopy[index].isHighlighted;
+      return rackCopy;
+    })
+  }
 
   useEffect(() => {
     setWs(new WebSocket('ws://localhost:3001'))
@@ -123,7 +164,9 @@ export default function Game() {
         rackTiles={rackTiles}
         moveRackTiles={moveRackTiles}
         players={players}
+        onSwap={onSwap}
         onHold={onHold}
+        toggleTileHighlight={toggleTileHighlight}
       />
     </div>
   );

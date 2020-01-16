@@ -1,7 +1,7 @@
 import React from 'react';
 import Tile from '../../Tile';
 
-export default function Rack({ tiles, moveRackTiles }) {
+export default function Rack({ tiles, moveRackTiles, toggleTileHighlight }) {
   return (
     <div className="rack">
       {Array(7).fill(0).map((_, index) => (
@@ -17,6 +17,9 @@ export default function Rack({ tiles, moveRackTiles }) {
               score={tiles[index].score}
               movable
               moveRackTiles={moveRackTiles}
+              isRackTile
+              isHighlighted={tiles[index].isHighlighted}
+              toggleTileHighlight={() => toggleTileHighlight(index)}
             />
           )}
         </div>
