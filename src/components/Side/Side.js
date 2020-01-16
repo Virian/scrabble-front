@@ -3,7 +3,12 @@ import Rack from './Rack';
 import Scores from './Scores';
 import Actions from './Actions';
 
-export default function Side({ rackTiles, moveRackTiles, players }) {
+export default function Side({ 
+  rackTiles,
+  moveRackTiles,
+  players,
+  onHold,
+}) {
   return (
     <div className="side">
       <Scores players={players} />
@@ -11,7 +16,7 @@ export default function Side({ rackTiles, moveRackTiles, players }) {
         tiles={rackTiles}
         moveRackTiles={moveRackTiles}
       />
-      <Actions />
+      <Actions onHold={onHold} />
     </div>
   )
 };

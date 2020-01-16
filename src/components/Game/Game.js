@@ -60,6 +60,15 @@ export default function Game() {
           return newPlayers
         });
         break;
+      case MessageTypes.NEXT_PLAYER:
+        setActivePlayerIndex((currentIndex) => {
+          return (currentIndex + 1) % players.length;
+        });
+        break;
+      case MessageTypes.YOUR_TURN:
+        setActivePlayerIndex(players.findIndex(player => player.isYou));
+        setGameState(GameState.PLAYING);
+        break;
       default:
         break;
     }
@@ -67,6 +76,7 @@ export default function Game() {
     setActivePlayerIndex,
     setGameState,
     setUserId,
+    players,
   ]);
 
   const moveRackTiles = (dragIndex, hoverIndex) => {
@@ -75,6 +85,14 @@ export default function Game() {
       rackCopy[hoverIndex] = rackCopy.splice(dragIndex, 1, rackCopy[hoverIndex])[0];
       return rackCopy;
     });
+  };
+
+  const onHold = () => {
+    ws.send(JSON.stringify(new Message({ type: MessageTypes.HOLD })));
+    setActivePlayerIndex((currentIndex) => {
+      return (currentIndex + 1) % players.length;
+    });
+    setGameState(GameState.WAITING_OPPONENT);
   };
 
   useEffect(() => {
@@ -105,6 +123,7 @@ export default function Game() {
         rackTiles={rackTiles}
         moveRackTiles={moveRackTiles}
         players={players}
+        onHold={onHold}
       />
     </div>
   );
