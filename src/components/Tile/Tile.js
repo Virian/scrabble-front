@@ -2,6 +2,8 @@ import React, { useRef, useImperativeHandle } from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from '../../enum/ItemTypes';
 
+// TODO: simplify with useDrag and useDrop
+
 const Tile = React.forwardRef(
   ({ 
     letter,
@@ -78,6 +80,7 @@ export default DropTarget(
         id: props.id,
         index: props.index,
       }),
+      canDrag: props => props.movable,
     },
     (connect, monitor) => ({
       connectDragSource: connect.dragSource(),
