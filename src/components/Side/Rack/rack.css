@@ -1,13 +1,10 @@
-.rack-wrapper {
-  padding: 20px;
-  background-color: antiquewhite;
-}
-
 .rack {
   display: grid;
   grid-template-columns: repeat(7, 30px);
   grid-template-rows: 30px;
   grid-gap: 3px;
+  padding: 20px;
+  background-color: antiquewhite;
 }
 
 .rack__tile-wrapper {

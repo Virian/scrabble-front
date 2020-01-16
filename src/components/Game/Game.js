@@ -45,7 +45,7 @@ export default function Game() {
         break;
       }
       case MessageTypes.ADD_TILES:
-        setRackTiles(messageObj.data);
+        setRackTiles(currentRack => [...currentRack, ...messageObj.data]);
         break;
       case MessageTypes.NOTIFY_START:
         setActivePlayerIndex(0);
@@ -69,9 +69,17 @@ export default function Game() {
     setUserId,
   ]);
 
+  const moveRackTiles = (dragIndex, hoverIndex) => {
+    setRackTiles((currentRack) => {
+      let rackCopy = currentRack.slice(0);
+      rackCopy[hoverIndex] = rackCopy.splice(dragIndex, 1, rackCopy[hoverIndex])[0];
+      return rackCopy;
+    });
+  };
+
   useEffect(() => {
     setWs(new WebSocket('ws://localhost:3001'))
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (ws) {
@@ -95,8 +103,9 @@ export default function Game() {
       />
       <Side
         rackTiles={rackTiles}
+        moveRackTiles={moveRackTiles}
         players={players}
       />
     </div>
-  )
+  );
 };
