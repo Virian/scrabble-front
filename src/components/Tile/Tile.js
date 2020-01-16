@@ -1,4 +1,5 @@
 import React, { useRef, useImperativeHandle } from 'react';
+import classNames from 'classnames';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from '../../enum/ItemTypes';
 
@@ -23,7 +24,7 @@ const Tile = React.forwardRef(
     return (
       <div
         ref={elementRef}
-        className={`tile ${movable ? 'tile--movable' : ''}`}
+        className={classNames('tile', { 'tile--movable': movable })}
       >
         <span className="tile__letter">{letter}</span>
         {score ? <span className="tile__score">{score}</span> : null}
