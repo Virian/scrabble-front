@@ -42,11 +42,8 @@ export default function Tile({
       item.index = hoverIndex;
     },
   });
-  const [{ isDragging }, drag] = useDrag({
+  const [, drag] = useDrag({
     item: { type: ItemTypes.TILE, index },
-    collect: monitor => ({
-      isDragging: monitor.isDragging(),
-    }),
     canDrag: () => movable,
   });
   drag(drop(ref));
