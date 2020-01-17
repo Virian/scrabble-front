@@ -12,7 +12,7 @@ export default function Side({
   toggleTileHighlight,
 }) {
   const canSwap = useMemo(() => {
-    return !!rackTiles.find((tile) => tile.isHighlighted);
+    return !!rackTiles.find((tile) => tile?.isHighlighted);
   }, [rackTiles]);
 
   return (

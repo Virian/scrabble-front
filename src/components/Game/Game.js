@@ -18,7 +18,7 @@ export default function Game() {
   const [ws, setWs] = useState(null);
   const [board, setBoard] = useState([]);
   const [bonuses, setBonuses] = useState([]);
-  const [rackTiles, setRackTiles] = useState([]);
+  const [rackTiles, setRackTiles] = useState(Array(7).fill(null));
   const [players, setPlayers] = useState([]);
 
   const handleMessage = useCallback((message) => {
@@ -45,13 +45,11 @@ export default function Game() {
         break;
       }
       case MessageTypes.ADD_TILES:
-        setRackTiles(currentRack => {
-          const newTiles = messageObj.data.map((tile) => ({
-            ...tile,
-            isHighlighted: false,
-          }));
-          return [...currentRack, ...newTiles]
-        });
+        const newTiles = messageObj.data.map((tile) => ({
+          ...tile,
+          isHighlighted: false,
+        }));
+        setRackTiles(newTiles);
         break;
       case MessageTypes.NOTIFY_START:
         setActivePlayerIndex(0);
