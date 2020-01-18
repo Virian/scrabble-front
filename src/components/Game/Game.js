@@ -109,6 +109,8 @@ export default function Game() {
 
   const moveTileFromRackToBoard = (rackIndex, boardX, boardY) => {
     const tile = rackTiles[rackIndex];
+    tile.isHighlighted = false;
+    tile.wasPlaced = true;
     setRackTiles((currentRack) => {
       const rackCopy = currentRack.slice(0);
       rackCopy[rackIndex] = null;
@@ -119,7 +121,17 @@ export default function Game() {
       boardCopy[boardY][boardX] = tile;
       return boardCopy;
     });
-  }
+  };
+
+  const moveTileOnBoard = ({ sourceX, sourceY, targetX, targetY }) => {
+    setBoard((currentBoard) => {
+      const boardCopy = currentBoard.slice(0);
+      const tile = boardCopy[sourceY][sourceX];
+      boardCopy[sourceY][sourceX] = null;
+      boardCopy[targetY][targetX] = tile;
+      return boardCopy;
+    })
+  };
 
   const onSwap = () => {
     setRackTiles((currentRack) => {
@@ -172,6 +184,7 @@ export default function Game() {
         boardTiles={board}
         bonuses={bonuses}
         moveTileFromRackToBoard={moveTileFromRackToBoard}
+        moveTileOnBoard={moveTileOnBoard}
       />
       <Side
         rackTiles={rackTiles}

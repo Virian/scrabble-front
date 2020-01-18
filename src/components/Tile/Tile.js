@@ -8,6 +8,8 @@ export default function Tile({
   score,
   movable,
   index,
+  x,
+  y,
   moveRackTiles,
   isRackTile,
   isHighlighted,
@@ -55,7 +57,13 @@ export default function Tile({
     canDrop: () => isRackTile,
   });
   const [, drag] = useDrag({
-    item: { type: ItemTypes.TILE, index, isRackTile },
+    item: { 
+      type: ItemTypes.TILE,
+      index,
+      isRackTile,
+      x,
+      y,
+    },
     canDrag: () => movable,
   });
   drag(drop(ref));

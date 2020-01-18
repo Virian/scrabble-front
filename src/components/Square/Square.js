@@ -9,6 +9,7 @@ export default function Square({
   children,
   bonus,
   moveTileFromRackToBoard,
+  moveTileOnBoard,
   x,
   y,
 }) {
@@ -17,7 +18,16 @@ export default function Square({
   const [{ hovered }, drop] = useDrop({
     accept: ItemTypes.TILE,
     drop: (item) => {
-      moveTileFromRackToBoard(item.index, x, y);
+      if (item.isRackTile) {
+        moveTileFromRackToBoard(item.index, x, y);
+      } else {
+        moveTileOnBoard({
+          sourceX: item.x,
+          sourceY: item.y,
+          targetX: x,
+          targetY: y,
+        });
+      }
     },
     collect: monitor => ({
       hovered: monitor.isOver(),

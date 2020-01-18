@@ -3,7 +3,12 @@ import Square from '../Square';
 import Tile from '../Tile';
 import { getBonusTextAndColor } from '../../utils/bonus.utils'
 
-export default function Board({ boardTiles, bonuses, moveTileFromRackToBoard }) {
+export default function Board({
+  boardTiles,
+  bonuses,
+  moveTileFromRackToBoard,
+  moveTileOnBoard,
+}) {
   const board = useMemo(() => {
     let tempBoard = boardTiles.map(row => {
       return row.map(tile => ({ tile, bonus: null }));
@@ -26,10 +31,19 @@ export default function Board({ boardTiles, bonuses, moveTileFromRackToBoard }) 
               key={`square-${rowIndex}-${columnIndex}`}
               bonus={bonus}
               moveTileFromRackToBoard={moveTileFromRackToBoard}
+              moveTileOnBoard={moveTileOnBoard}
               x={columnIndex}
               y={rowIndex}
             >
-              {tile && <Tile letter={tile.letter} score={tile.score} />}
+              {tile ? (
+                <Tile
+                  letter={tile.letter}
+                  score={tile.score}
+                  movable={tile.wasPlaced}
+                  x={columnIndex}
+                  y={rowIndex}
+                />
+              ) : null}
             </Square>
           ))
         )
