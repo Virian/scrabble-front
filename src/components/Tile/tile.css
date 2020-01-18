@@ -39,7 +39,7 @@
 .tile__score {
   position: absolute;
   right: 12.5%;
-  bottom: 15%;
+  bottom: 20%;
   font-size: 9px;
   transform: translate(50%, 50%);
 }

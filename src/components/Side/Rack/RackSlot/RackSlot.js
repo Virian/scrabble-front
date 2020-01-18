@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import classNames from 'classnames';
 import { useDrop } from 'react-dnd';
 import ItemTypes from '../../../../enum/ItemTypes';
 import Tile from '../../../Tile';
@@ -8,12 +7,13 @@ export default function Rack({
   tile,
   index,
   moveRackTiles,
+  moveTileFromBoardToRack,
   toggleTileHighlight
 }) {
   const ref = useRef(null);
-  const [{ hovered }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: ItemTypes.TILE,
-    hover(item, monitor) {
+    hover: (item, monitor) => {
       if (!ref.current) {
         return;
       }
@@ -49,16 +49,19 @@ export default function Rack({
       // but it's good here for the sake of performance to avoid expensive index searches.
       item.index = hoverIndex;
     },
-    collect: monitor => ({
-      hovered: monitor.isOver(),
-    }),
+    drop: (item) => {
+      if (item.isRackTile) {
+        return;
+      }
+      moveTileFromBoardToRack(index, item.x, item.y);
+    },
   });
   drop(ref);
 
   return (
     <div
       ref={ref}
-      className={classNames('rack-slot', { 'rack-slot--highlighted' : hovered })}
+      className="rack-slot"
     >
       {tile && (
         <Tile

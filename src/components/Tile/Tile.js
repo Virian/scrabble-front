@@ -18,11 +18,11 @@ export default function Tile({
   const ref = useRef(null);
   const [, drop] = useDrop({
     accept: ItemTypes.TILE,
-    hover(item, monitor) {
+    hover: (item, monitor) => {
       if (!ref.current) {
         return;
       }
-      if (!isRackTile) {
+      if (!isRackTile || !item.isRackTile) {
         return;
       }
       const dragIndex = item.index;

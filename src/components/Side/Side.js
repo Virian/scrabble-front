@@ -6,6 +6,7 @@ import Actions from './Actions';
 export default function Side({ 
   rackTiles,
   moveRackTiles,
+  moveTileFromBoardToRack,
   players,
   onSwap,
   onHold,
@@ -21,6 +22,7 @@ export default function Side({
       <Rack
         tiles={rackTiles}
         moveRackTiles={moveRackTiles}
+        moveTileFromBoardToRack={moveTileFromBoardToRack}
         toggleTileHighlight={toggleTileHighlight}
       />
       <Actions
