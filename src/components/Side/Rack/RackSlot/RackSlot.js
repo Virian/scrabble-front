@@ -19,15 +19,15 @@ export default function Rack({
       if (dragIndex === hoverIndex) return;
       // Determine rectangle on screen
       const hoverBoundingRect = ref.current.getBoundingClientRect();
-      const horizontalLeftBreakpoint = (hoverBoundingRect.right - hoverBoundingRect.left) / 3;
-      const horizontalRightBreakpoint = (hoverBoundingRect.right - hoverBoundingRect.left) * 2 / 3;
+      const horizontalLeftBreakpoint = (hoverBoundingRect.right - hoverBoundingRect.left) / 4;
+      const horizontalRightBreakpoint = (hoverBoundingRect.right - hoverBoundingRect.left) * 3 / 4;
       // Determine mouse position
       const clientOffset = monitor.getClientOffset();
       // Get pixels to the left
       const hoverClientX = clientOffset.x - hoverBoundingRect.left;
       // Only perform the move when the mouse has crossed half of the items width
-      // When dragging right, only move when the cursor passed 33% of item width
-      // When dragging left, only move when the cursor passed 33% of item width
+      // When dragging right, only move when the cursor passed 25% of item width
+      // When dragging left, only move when the cursor passed 25% of item width
       // Dragging right
       if (dragIndex < hoverIndex && hoverClientX < horizontalLeftBreakpoint) return;
       // Dragging left

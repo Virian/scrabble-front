@@ -107,6 +107,20 @@ export default function Game() {
     });
   };
 
+  const moveTileFromRackToBoard = (rackIndex, boardX, boardY) => {
+    const tile = rackTiles[rackIndex];
+    setRackTiles((currentRack) => {
+      const rackCopy = currentRack.slice(0);
+      rackCopy[rackIndex] = null;
+      return rackCopy;
+    });
+    setBoard((currentBoard) => {
+      const boardCopy = currentBoard.slice(0);
+      boardCopy[boardY][boardX] = tile;
+      return boardCopy;
+    });
+  }
+
   const onSwap = () => {
     setRackTiles((currentRack) => {
       const lettersToSwap = currentRack
@@ -157,6 +171,7 @@ export default function Game() {
       <Board
         boardTiles={board}
         bonuses={bonuses}
+        moveTileFromRackToBoard={moveTileFromRackToBoard}
       />
       <Side
         rackTiles={rackTiles}
