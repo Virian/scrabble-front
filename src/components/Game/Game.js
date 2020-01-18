@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { 
+  useEffect,
+  useState,
+  useContext,
+  useCallback,
+  useMemo,
+} from 'react';
 import { sortBy } from 'lodash-es'
 import Board from '../Board';
 import Side from '../Side';
@@ -7,6 +13,7 @@ import Player from '../../models/Player';
 import MessageTypes from '../../enum/MessageTypes';
 import GameState from '../../enum/GameState';
 import { GameContext } from '../../context/GameContext';
+import { isPropertyEqual } from '../../utils/array.utils';
 
 export default function Game() {
   const { 
@@ -20,6 +27,33 @@ export default function Game() {
   const [bonuses, setBonuses] = useState([]);
   const [rackTiles, setRackTiles] = useState(Array(7).fill(null));
   const [players, setPlayers] = useState([]);
+
+  const tilesPlaced = useMemo(() => {
+    return board.reduce((tiles, row, rowIndex) => {
+      const placed = row.reduce((tilesInRow, tile, columnIndex) => {
+        if (tile?.wasPlaced) {
+          return [...tilesInRow, {
+            ...tile,
+            x: columnIndex,
+            y: rowIndex,
+          }]
+        } else {
+          return tilesInRow
+        }
+      }, []);
+      return [...tiles, ...placed]
+    }, []);
+  }, [board]);
+
+  const canPlace = useMemo(() => {
+    if (tilesPlaced.length === 0) {
+      return false;
+    } else {
+      // TODO: add more complex logic; check if they are one after another during first turn
+      // TODO: check if they are connected to another tile afterwards
+      return isPropertyEqual(tilesPlaced, 'x') || isPropertyEqual(tilesPlaced, 'y');
+    }
+  }, [tilesPlaced])
 
   const handleMessage = useCallback((message) => {
     const messageObj = new Message(JSON.parse(message));
@@ -206,6 +240,7 @@ export default function Game() {
         moveRackTiles={moveRackTiles}
         moveTileFromBoardToRack={moveTileFromBoardToRack}
         players={players}
+        canPlace={canPlace}
         onSwap={onSwap}
         onHold={onHold}
         toggleTileHighlight={toggleTileHighlight}

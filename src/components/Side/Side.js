@@ -8,6 +8,7 @@ export default function Side({
   moveRackTiles,
   moveTileFromBoardToRack,
   players,
+  canPlace,
   onSwap,
   onHold,
   toggleTileHighlight,
@@ -26,6 +27,7 @@ export default function Side({
         toggleTileHighlight={toggleTileHighlight}
       />
       <Actions
+        canPlace={canPlace}
         canSwap={canSwap}
         onSwap={onSwap}
         onHold={onHold}

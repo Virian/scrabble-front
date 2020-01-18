@@ -3,7 +3,12 @@ import { ButtonGroup, Button } from '@material-ui/core'
 import { GameContext } from '../../../context/GameContext';
 import GameState from '../../../enum/GameState';
 
-export default function Actions({ canSwap, onHold, onSwap }) {
+export default function Actions({
+  canPlace,
+  canSwap,
+  onHold,
+  onSwap,
+}) {
   const { gameState } = useContext(GameContext);
   const [isYourTurn, setIsYourTurn] = useState(false);
 
@@ -14,7 +19,7 @@ export default function Actions({ canSwap, onHold, onSwap }) {
   return ( // TODO: maybe disable buttons depending on different situations on the board
     <div className="actions">
       <ButtonGroup disabled={!isYourTurn}>
-        <Button>ułóż</Button>
+        <Button disabled={!canPlace}>ułóż</Button>
         <Button
           disabled={!canSwap}
           onClick={onSwap}
