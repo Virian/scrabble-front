@@ -124,9 +124,9 @@ export default function Game() {
   const onSwap = () => {
     setRackTiles((currentRack) => {
       const lettersToSwap = currentRack
-        .filter((tile) => tile.isHighlighted)
+        .filter((tile) => tile?.isHighlighted)
         .map((tile) => tile.letter);
-      const newRack = currentRack.filter((tile) => !tile.isHighlighted);
+      const newRack = currentRack.filter((tile) => !tile?.isHighlighted);
       ws.send(JSON.stringify(new Message({ type: MessageTypes.SWAP, data: lettersToSwap })));
       return newRack;
     });
