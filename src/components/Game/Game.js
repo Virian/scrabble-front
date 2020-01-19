@@ -17,6 +17,7 @@ import { isPropertyEqual } from '../../utils/array.utils';
 
 export default function Game() {
   const { 
+    gameState,
     setGameState,
     setActivePlayerIndex,
     setUserId,
@@ -49,11 +50,28 @@ export default function Game() {
     if (tilesPlaced.length === 0) {
       return false;
     } else {
-      // TODO: add more complex logic; check if they are one after another during first turn
-      // TODO: check if they are connected to another tile afterwards
-      return isPropertyEqual(tilesPlaced, 'x') || isPropertyEqual(tilesPlaced, 'y');
+      // check if tiles are placed in one dimension
+      const areHorizontal = isPropertyEqual(tilesPlaced, 'y');
+      const areVertical = isPropertyEqual(tilesPlaced, 'x');
+      if (!areHorizontal && !areVertical) {
+        return false;
+      } else if (gameState === GameState.PLAYING_FIRST_TURN) {
+        // check if there is no space between letters and if there is a tile on the board center
+        const isOnCenter = !!tilesPlaced.find((tile) => tile.x === 7 && tile.y === 7);
+        const consecutiveIndexes = tilesPlaced
+          .map((tile) => areHorizontal ? tile.x : tile.y)
+          .sort((a, b) => a - b);
+        const differences = consecutiveIndexes.slice(1).map((index, i) => index - consecutiveIndexes[i]);
+        const areInLine = differences.every((diff) => diff === 1);
+        return areInLine && isOnCenter;
+      } else if (gameState === GameState.PLAYING) {
+        // TODO: check if new tiles are connected to already existing ones
+        return false;
+      } else {
+        return false;
+      }
     }
-  }, [tilesPlaced])
+  }, [tilesPlaced, gameState])
 
   const handleMessage = useCallback((message) => {
     const messageObj = new Message(JSON.parse(message));
