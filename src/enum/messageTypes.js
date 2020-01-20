@@ -7,6 +7,8 @@ export default {
   YOUR_TURN: 'yourTurn',
   NEXT_PLAYER: 'nextPlayer',
   PLACE: 'place',
+  AWAITING_ACCEPTANCE: 'awaitingAcceptance',
+  AWAITING_OTHERS_ACCEPTANCE: 'awaitingOthersAcceptance',
   SWAP: 'swap',
   SWAP_CANCELLED: 'swapCancelled',
   SWAP_ACCEPTED: 'swapAccepted',

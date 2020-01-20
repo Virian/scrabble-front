@@ -44,9 +44,10 @@ export default function Square({
       className={classNames('square', bonus ? `square--${bonus.color}` : null)}
     >
       {hovered ? <div className="square__overlay" /> : null}
-      {!children && bonus ? (
+      {bonus ? (
         <span className="square__bonus-text">{bonus.text}</span>
-      ) : children}
+      ) : null}
+      {children}
     </div>
   )
 };

@@ -116,6 +116,25 @@ export default function Game() {
           return newPlayers
         });
         break;
+      case MessageTypes.AWAITING_OTHERS_ACCEPTANCE:
+        setGameState(GameState.WAITING_OTHERS_WORD_ACCEPTANCE);
+        break;
+      case MessageTypes.AWAITING_ACCEPTANCE:
+        setGameState(GameState.WAITING_WORD_ACCEPTANCE);
+        setBoard((currentBoard) => {
+          const boardCopy = currentBoard.slice(0);
+          messageObj.data.forEach(({ letter, score, isBlank, x, y }) => {
+            boardCopy[y][x] = {
+              letter,
+              score,
+              isBlank,
+              isHighlighted: false,
+              wasPlaced: true,
+            }
+          })
+          return boardCopy;
+        });
+        break;
       case MessageTypes.SWAP_ACCEPTED:
         setRackTiles(currentRack => {
           const newTiles = messageObj.data.map((tile) => ({
@@ -200,6 +219,17 @@ export default function Game() {
     })
   };
 
+  const onPlace = () => {
+    const tilesToSend = tilesPlaced.map(({ letter, score, isBlank, x, y }) => ({
+      letter,
+      score,
+      isBlank,
+      x,
+      y,
+    }))
+    ws.send(JSON.stringify(new Message({ type: MessageTypes.PLACE, data: tilesToSend })));
+  };
+
   const onSwap = () => {
     setRackTiles((currentRack) => {
       const lettersToSwap = currentRack
@@ -259,6 +289,7 @@ export default function Game() {
         moveTileFromBoardToRack={moveTileFromBoardToRack}
         players={players}
         canPlace={canPlace}
+        onPlace={onPlace}
         onSwap={onSwap}
         onHold={onHold}
         toggleTileHighlight={toggleTileHighlight}

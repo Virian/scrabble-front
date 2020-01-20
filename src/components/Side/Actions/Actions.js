@@ -6,6 +6,7 @@ import GameState from '../../../enum/GameState';
 export default function Actions({
   canPlace,
   canSwap,
+  onPlace,
   onHold,
   onSwap,
 }) {
@@ -16,20 +17,23 @@ export default function Actions({
     setIsYourTurn(gameState === GameState.PLAYING || gameState === GameState.PLAYING_FIRST_TURN);
   }, [gameState])
 
-  return ( // TODO: maybe disable buttons depending on different situations on the board
+  return (
     <div className="actions">
       <ButtonGroup disabled={!isYourTurn}>
-        <Button disabled={!canPlace}>ułóż</Button>
+        <Button
+          disabled={!canPlace}
+          onClick={onPlace}
+        >ułóż</Button>
         <Button
           disabled={!canSwap}
           onClick={onSwap}
         >wymień</Button>
         <Button onClick={onHold}>pas</Button>
       </ButtonGroup>
-      <ButtonGroup>
+      {gameState === GameState.WAITING_WORD_ACCEPTANCE && <ButtonGroup>
         <Button>akceptuję</Button>
         <Button>sprawdzam</Button>
-      </ButtonGroup>
+      </ButtonGroup>}
     </div>
   )
 }

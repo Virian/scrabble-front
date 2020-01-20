@@ -35,5 +35,6 @@
 }
 
 .square__bonus-text {
+  position: absolute;
   font-weight: 500;
 }

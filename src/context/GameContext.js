@@ -9,7 +9,9 @@ export const GameContextProvider = ({ children }) => {
   const [activePlayerIndex, setActivePlayerIndex] = useState(-1);
 
   useEffect(() => {
-    if (gameState === GameState.PLAYING || gameState === GameState.PLAYING_FIRST_TURN) { // TODO: later there may be more game states to consider
+    if (gameState === GameState.PLAYING ||
+      gameState === GameState.PLAYING_FIRST_TURN ||
+      gameState === GameState.WAITING_WORD_ACCEPTANCE) { // TODO: later there may be more game states to consider
       document.title = '\u25b6Scrabble'
     } else {
       document.title = 'Scrabble'

@@ -14,6 +14,7 @@ export default function Tile({
   isRackTile,
   isHighlighted,
   toggleTileHighlight,
+  blink,
 }) {
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -76,7 +77,7 @@ export default function Tile({
   return (
     <div
       ref={ref}
-      className={classNames('tile', { 'tile--movable': movable })}
+      className={classNames('tile', { 'tile--movable': movable, 'tile--blink': blink })}
       onClick={highlightTile}
     >
       {isHighlighted ? <div className="tile__overlay" /> : null}
