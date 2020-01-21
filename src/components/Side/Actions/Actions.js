@@ -7,6 +7,8 @@ export default function Actions({
   canPlace,
   canSwap,
   onPlace,
+  onAccept,
+  onCheck,
   onHold,
   onSwap,
 }) {
@@ -31,8 +33,8 @@ export default function Actions({
         <Button onClick={onHold}>pas</Button>
       </ButtonGroup>
       {gameState === GameState.WAITING_WORD_ACCEPTANCE && <ButtonGroup>
-        <Button>akceptuję</Button>
-        <Button>sprawdzam</Button>
+        <Button onClick={onAccept}>akceptuję</Button>
+        <Button onClick={onCheck}>sprawdzam</Button>
       </ButtonGroup>}
     </div>
   )

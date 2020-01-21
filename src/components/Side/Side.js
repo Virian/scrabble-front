@@ -10,6 +10,8 @@ export default function Side({
   players,
   canPlace,
   onPlace,
+  onAccept,
+  onCheck,
   onSwap,
   onHold,
   toggleTileHighlight,
@@ -31,6 +33,8 @@ export default function Side({
         canPlace={canPlace}
         canSwap={canSwap}
         onPlace={onPlace}
+        onAccept={onAccept}
+        onCheck={onCheck}
         onSwap={onSwap}
         onHold={onHold}
       />

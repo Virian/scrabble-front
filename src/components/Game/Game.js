@@ -47,7 +47,8 @@ export default function Game() {
   }, [board]);
 
   const canPlace = useMemo(() => {
-    if (tilesPlaced.length === 0) {
+    if (tilesPlaced.length === 0 ||
+      (tilesPlaced.length === 1 && gameState === GameState.PLAYING_FIRST_TURN)) {
       return false;
     } else {
       // check if tiles are placed in one dimension
@@ -106,7 +107,7 @@ export default function Game() {
       case MessageTypes.NOTIFY_START:
         setActivePlayerIndex(0);
         setPlayers((currentPlayers) => {
-          let newPlayers = currentPlayers.slice(0);
+          let newPlayers = currentPlayers.slice();
           newPlayers.forEach((player, index) => {
             const matchingPlayerData = messageObj.data.find(data => data.id === player.id);
             newPlayers[index].order = matchingPlayerData.order;
@@ -122,7 +123,7 @@ export default function Game() {
       case MessageTypes.AWAITING_ACCEPTANCE:
         setGameState(GameState.WAITING_WORD_ACCEPTANCE);
         setBoard((currentBoard) => {
-          const boardCopy = currentBoard.slice(0);
+          const boardCopy = currentBoard.slice();
           messageObj.data.forEach(({ letter, score, isBlank, x, y }) => {
             boardCopy[y][x] = {
               letter,
@@ -133,6 +134,15 @@ export default function Game() {
             }
           })
           return boardCopy;
+        });
+        break;
+      case MessageTypes.UPDATE_SCORE:
+        setPlayers((currentPlayers) => {
+          const { playerId, score } = messageObj.data;
+          const playersCopy = currentPlayers.slice();
+          const indexToUpdate = playersCopy.findIndex((player) => player.id === playerId);
+          playersCopy[indexToUpdate].score += score;
+          return playersCopy;
         });
         break;
       case MessageTypes.SWAP_ACCEPTED:
@@ -172,7 +182,7 @@ export default function Game() {
 
   const moveRackTiles = (dragIndex, hoverIndex) => {
     setRackTiles((currentRack) => {
-      const rackCopy = currentRack.slice(0);
+      const rackCopy = currentRack.slice();
       rackCopy[hoverIndex] = rackCopy.splice(dragIndex, 1, rackCopy[hoverIndex])[0];
       return rackCopy;
     });
@@ -183,12 +193,12 @@ export default function Game() {
     tile.isHighlighted = false;
     tile.wasPlaced = true;
     setRackTiles((currentRack) => {
-      const rackCopy = currentRack.slice(0);
+      const rackCopy = currentRack.slice();
       rackCopy[rackIndex] = null;
       return rackCopy;
     });
     setBoard((currentBoard) => {
-      const boardCopy = currentBoard.slice(0);
+      const boardCopy = currentBoard.slice();
       boardCopy[boardY][boardX] = tile;
       return boardCopy;
     });
@@ -196,7 +206,7 @@ export default function Game() {
 
   const moveTileOnBoard = ({ sourceX, sourceY, targetX, targetY }) => {
     setBoard((currentBoard) => {
-      const boardCopy = currentBoard.slice(0);
+      const boardCopy = currentBoard.slice();
       const tile = boardCopy[sourceY][sourceX];
       boardCopy[sourceY][sourceX] = null;
       boardCopy[targetY][targetX] = tile;
@@ -208,12 +218,12 @@ export default function Game() {
     const tile = board[boardY][boardX];
     tile.wasPlaced = false;
     setBoard((currentBoard) => {
-      const boardCopy = currentBoard.slice(0);
+      const boardCopy = currentBoard.slice();
       boardCopy[boardY][boardX] = null;
       return boardCopy;
     });
     setRackTiles((currentRack) => {
-      const rackCopy = currentRack.slice(0);
+      const rackCopy = currentRack.slice();
       rackCopy[rackIndex] = tile;
       return rackCopy;
     })
@@ -249,9 +259,18 @@ export default function Game() {
     setGameState(GameState.WAITING_OPPONENT);
   };
 
+  const onAccept = () => {
+    ws.send(JSON.stringify(new Message({ type: MessageTypes.WORD_ACCEPT })));
+    setGameState(GameState.WAITING_OTHERS_WORD_ACCEPTANCE);
+  }
+
+  const onCheck = () => {
+    ws.send(JSON.stringify(new Message({ type: MessageTypes.WORD_CHECK })));
+  }
+
   const toggleTileHighlight = (index) => {
     setRackTiles((currentRack) => {
-      let rackCopy = currentRack.slice(0);
+      let rackCopy = currentRack.slice();
       rackCopy[index].isHighlighted = !rackCopy[index].isHighlighted;
       return rackCopy;
     })
@@ -290,6 +309,8 @@ export default function Game() {
         players={players}
         canPlace={canPlace}
         onPlace={onPlace}
+        onAccept={onAccept}
+        onCheck={onCheck}
         onSwap={onSwap}
         onHold={onHold}
         toggleTileHighlight={toggleTileHighlight}
