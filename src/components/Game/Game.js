@@ -162,11 +162,39 @@ export default function Game() {
         // TODO: display information about unsuccessful swap
         break;
       case MessageTypes.NEXT_PLAYER:
+        setBoard((currentBoard) => {
+          return currentBoard.map((row) => {
+            return row.map((square) => {
+              if (square) {
+                return {
+                  ...square,
+                  wasPlaced: false,
+                };
+              } else {
+                return square;
+              }
+            });
+          });
+        });
         setActivePlayerIndex((currentIndex) => {
           return (currentIndex + 1) % players.length;
         });
         break;
       case MessageTypes.YOUR_TURN:
+        setBoard((currentBoard) => {
+          return currentBoard.map((row) => {
+            return row.map((square) => {
+              if (square) {
+                return {
+                  ...square,
+                  wasPlaced: false,
+                };
+              } else {
+                return square;
+              }
+            });
+          });
+        });
         setActivePlayerIndex(players.findIndex(player => player.isYou));
         setGameState(GameState.PLAYING);
         break;
