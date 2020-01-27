@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { sortBy } from 'lodash-es'
+import { sortBy, range } from 'lodash-es'
 import Board from '../Board';
 import Side from '../Side';
 import Message from '../../models/Message';
@@ -54,25 +54,34 @@ export default function Game() {
       // check if tiles are placed in one dimension
       const areHorizontal = isPropertyEqual(tilesPlaced, 'y');
       const areVertical = isPropertyEqual(tilesPlaced, 'x');
+      const consecutiveIndexes = tilesPlaced
+        .map((tile) => areHorizontal ? tile.x : tile.y)
+        .sort((a, b) => a - b);
       if (!areHorizontal && !areVertical) {
         return false;
       } else if (gameState === GameState.PLAYING_FIRST_TURN) {
         // check if there is no space between letters and if there is a tile on the board center
         const isOnCenter = !!tilesPlaced.find((tile) => tile.x === 7 && tile.y === 7);
-        const consecutiveIndexes = tilesPlaced
-          .map((tile) => areHorizontal ? tile.x : tile.y)
-          .sort((a, b) => a - b);
         const differences = consecutiveIndexes.slice(1).map((index, i) => index - consecutiveIndexes[i]);
         const areInLine = differences.every((diff) => diff === 1);
         return areInLine && isOnCenter;
       } else if (gameState === GameState.PLAYING) {
-        // TODO: check if new tiles are connected to already existing ones
-        return false;
+        const areAdjacent = tilesPlaced.some(({ x , y}) => {
+          const hasTopConnected = y === 0 ? false : board[y - 1][x] && !board[y - 1][x].wasPlaced;
+          const hasRightConnected = x === board[0].length ? false : !!board[y][x + 1] && !board[y][x + 1].wasPlaced;
+          const hasBottomConnected = y === board.length ? false : !!board[y + 1][x] && !board[y + 1][x].wasPlaced;;
+          const hasLeftConnected = x === 0 ? false : !!board[y][x - 1] && !board[y][x - 1].wasPlaced;;
+          return hasTopConnected || hasRightConnected || hasBottomConnected || hasLeftConnected;
+        });
+        const indexesToFill = range(consecutiveIndexes[0], consecutiveIndexes[consecutiveIndexes.length - 1] + 1);
+        const { x, y } = tilesPlaced[0];
+        const areContinuous = indexesToFill.every((index) => areHorizontal ? !!board[y][index] : !!board[index][x]);
+        return areAdjacent && areContinuous
       } else {
         return false;
       }
     }
-  }, [tilesPlaced, gameState])
+  }, [tilesPlaced, gameState, board])
 
   const handleMessage = useCallback((message) => {
     const messageObj = new Message(JSON.parse(message));
