@@ -102,7 +102,14 @@ export default function Game() {
           ...tile,
           isHighlighted: false,
         }));
-        setRackTiles(newTiles);
+        setRackTiles((currentRack) => {
+          const rackCopy = currentRack.slice();
+          newTiles.forEach((tile) => {
+            const index = rackCopy.findIndex((rackTile) => !rackTile);
+            rackCopy[index] = tile;
+          });
+          return rackCopy;
+        });
         break;
       case MessageTypes.NOTIFY_START:
         setActivePlayerIndex(0);
